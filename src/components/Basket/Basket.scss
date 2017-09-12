@@ -1,0 +1,35 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.shop {
+    &__basket {
+        width: 50%;
+        margin: 30px auto;
+
+    }
+
+    &__basket-title {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    &__basket-list {
+        padding: 10px;
+        outline: 1px solid #000;
+    }
+
+    &__basket-item {
+        display: grid;
+        grid-template-columns: 40% 20% 20% 20%;
+        margin: 0 15px;
+        padding: 5px 0;
+        list-style: none;
+        border-bottom: 1px solid #000;
+    }
+
+    &__basket-counter {
+        width: 30%;
+    }
+
+}
