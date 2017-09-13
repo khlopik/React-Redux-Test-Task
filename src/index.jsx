@@ -5,24 +5,8 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
-// import createHistory from 'history/createBrowserHistory';
-import throttle from 'lodash/throttle';
 import RootContainer from '@/containers/RootContainer';
-import configureStore from '@/store';
-
-
-// const history = createHistory();
-// const persistedState = loadState();
-const store = configureStore();
-
-store.subscribe(throttle(() => {
-    saveState({
-        backlog: store.getState().backlog,
-        board: store.getState().board,
-        sprints: store.getState().sprints,
-        retro: store.getState().retro,
-    });
-}), 1000);
+import store from '@/store';
 
 render(
     <AppContainer>
