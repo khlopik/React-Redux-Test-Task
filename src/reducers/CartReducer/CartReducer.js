@@ -18,13 +18,27 @@ const cartReducer = (state = {
 }, action) => {
   switch (action.type) {
     case 'ADD_ITEM':
-      return {
+      const newState = _.filter(state.cart, ['id', action.payload]).length ?
+      {
+        ...state,
+        cart: _.map(state.cart, (item) => {
+          if (item.id !== action.payload) {
+            return item;
+          }
+          return {
+            ...item,
+            quantity: _.filter(state.cart, ['id', action.payload])[0].quantity + 1,
+          };
+        }),
+      } :
+      {
         ...state,
         cart: [...state.cart, {
           id: action.payload,
           quantity: 1,
         }],
       };
+      return newState;
     case 'CHANGE_ITEM_QUANTITY':
       return {
         ...state,
