@@ -22,7 +22,7 @@ const propTypes = {
 const ShopPage = (props) => {
   let totalPrice = 0;
   const cartItems = props.cart.length ? _.map(props.cart, (item) => {
-    totalPrice += _.filter(props.products, ['id', item.id])[0].price * item.quantity;
+    totalPrice += _.filter(props.products, ['id', item.id])[0].price * (item.quantity ? item.quantity : 0);
     return (
       <CartItem
         key={item.id}

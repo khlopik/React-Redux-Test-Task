@@ -22,9 +22,12 @@ const CartItem = (props) => {
     value={props.cartItem.quantity}
     ref={(input) => { this.itemQuantity[props.cartItem.id.toString()] = input; }}
     onChange={() => {
-      if (Number.isInteger(parseInt(this.itemQuantity[props.cartItem.id].value))) {
-        props.changeQuantity(props.cartItem.id,
-          parseInt(this.itemQuantity[props.cartItem.id].value));
+      props.changeQuantity(props.cartItem.id,
+        parseInt(this.itemQuantity[props.cartItem.id].value));
+    }}
+    onBlur={() => {
+      if (!Number.isInteger(parseInt(this.itemQuantity[props.cartItem.id].value))) {
+        props.changeQuantity(props.cartItem.id, 1);
       }
     }}
   />);
@@ -37,9 +40,9 @@ const CartItem = (props) => {
   return (
     <li className="shop__cart-item">
       <span>{props.cartItem.itemName}</span>
-      <span>{props.cartItem.quantity ? `${props.cartItem.price} USD` : 'Price'}</span>
+      <span>{props.cartItem.quantity ? `${props.cartItem.price} USD` : ''}</span>
       {quantity}
-      <span>`${props.cartItem.price * props.cartItem.quantity} USD`</span>
+      <span>{props.cartItem.quantity ? `${props.cartItem.price * props.cartItem.quantity} USD` : ''}</span>
       {remove}
     </li>
   );
