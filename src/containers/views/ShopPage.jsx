@@ -25,7 +25,7 @@ const ShopPage = (props) => {
     totalPrice += _.filter(props.products, ['id', item.id])[0].price * item.quantity;
     return (
       <CartItem
-        key={uuid()}
+        key={item.id}
         cartItem={{
           ...item,
           id: item.id,
