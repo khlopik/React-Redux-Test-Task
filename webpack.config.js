@@ -105,7 +105,7 @@ module.exports = {
     plugins: [
         new CleanWebpackPlugin(['dist']),
         new HtmlWebpackPlugin({
-            title: 'Scrumi',
+            title: 'React + Redux Test Task',
             filename: 'index.html',
             template: './index.ejs',
             favicon: './favicon.png',

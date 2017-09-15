@@ -1,12 +1,7 @@
 import { map } from 'lodash/map';
 
 const cartReducer = (state = {
-  cart: [
-    {
-      id: 2,
-      quantity: 1,
-    },
-  ],
+  cart: [],
   products: [
     { id: 1, productName: 'item1', price: 20 },
     { id: 2, productName: 'item2', price: 30 },
@@ -55,7 +50,7 @@ const cartReducer = (state = {
     case 'REMOVE_ITEM':
       return {
         ...state,
-        cart: _.filter(state.cart, (item) => (item.id !== action.payload)),
+        cart: _.filter(state.cart, item => (item.id !== action.payload)),
       };
     default:
       return state;

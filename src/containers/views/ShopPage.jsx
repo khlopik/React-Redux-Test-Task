@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import uuid from 'uuid';
 import { map, filter } from 'lodash';
@@ -10,50 +11,55 @@ import { addItemToCart, removeItemFromCart, changeItemQuantity } from '@/actions
 import Product from '@/components/Product/Product';
 import Products from '@/components/Product/Products';
 
-class ShopPage extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  render() {
-    let totalPrice = 0;
-    const cartItems = this.props.cart.length ? _.map(this.props.cart, (item) => {
-      totalPrice += _.filter(this.props.products, ['id', item.id])[0].price * item.quantity;
-      return (
-        <CartItem
-          key={uuid()}
-          cartItem={{
-            ...item,
-            id: item.id,
-            itemName: _.filter(this.props.products, ['id', item.id])[0].productName,
-            price: _.filter(this.props.products, ['id', item.id])[0].price,
-          }}
-          changeQuantity={this.props.changeQuantity}
-          removeProduct={this.props.removeItem}
-        />
-      )}) : <p className="shop__no-items">No items added</p>;
+const propTypes = {
+  cart: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  products: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  addItem: PropTypes.func.isRequired,
+  changeQuantity: PropTypes.func.isRequired,
+  removeItem: PropTypes.func.isRequired,
+};
 
-    const products = _.map(this.props.products, (item) => (
-      <Product
-        key={uuid()}
-        id={item.id}
-        productName={item.productName}
-        productPrice={item.price}
-        addToCart={this.props.addItem}
-      />
-    ));
-
+const ShopPage = (props) => {
+  let totalPrice = 0;
+  const cartItems = props.cart.length ? _.map(props.cart, (item) => {
+    totalPrice += _.filter(props.products, ['id', item.id])[0].price * item.quantity;
     return (
-      <div>
-        <Cart totalPrice={totalPrice}>
-          {cartItems}
-        </Cart>
-        <Products>
-          {products}
-        </Products>
-      </div>
+      <CartItem
+        key={uuid()}
+        cartItem={{
+          ...item,
+          id: item.id,
+          itemName: _.filter(props.products, ['id', item.id])[0].productName,
+          price: _.filter(props.products, ['id', item.id])[0].price,
+        }}
+        changeQuantity={props.changeQuantity}
+        removeProduct={props.removeItem}
+      />
     );
-  }
-}
+  }) : <p className="shop__no-items">No items added</p>;
+
+  const products = _.map(props.products, item => (
+    <Product
+      key={uuid()}
+      id={item.id}
+      productName={item.productName}
+      productPrice={item.price}
+      addToCart={props.addItem}
+    />
+  ));
+
+  return (
+    <div>
+      <Cart totalPrice={totalPrice}>
+        {cartItems}
+      </Cart>
+      <Products>
+        {products}
+      </Products>
+    </div>
+  );
+};
+
 
 const mapStateToProps = state => ({
   cart: state.cartReducer.cart,
@@ -69,7 +75,9 @@ const mapDispatchToProps = dispatch => ({
   },
   changeQuantity: (id, newQuantity) => {
     dispatch(changeItemQuantity(id, newQuantity));
-  }
+  },
 });
+
+ShopPage.propTypes = propTypes;
 
 export default connect(mapStateToProps, mapDispatchToProps)(ShopPage);
