@@ -25,7 +25,7 @@ const CartItem = (props) => {
     ref={(input) => { this.itemQuantity[props.cartItem.id.toString()] = input; }}
     onChange={() => {
       const value = parseInt(this.itemQuantity[props.cartItem.id].value);
-      if (Number.isInteger(value) && value > 99) {
+      if (Number.isInteger(value) && (value > 99 || value < 1)) {
         return;
       }
       props.changeQuantity(props.cartItem.id, value);
