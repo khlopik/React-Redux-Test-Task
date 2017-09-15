@@ -18,15 +18,21 @@ const CartItem = (props) => {
     className="shop__cart-counter"
     type="number"
     min="1"
-    pattern="\d{1,3}"
+    max="99"
+    maxLength="2"
+    pattern="\d+{1,3}"
     value={props.cartItem.quantity}
     ref={(input) => { this.itemQuantity[props.cartItem.id.toString()] = input; }}
     onChange={() => {
-      props.changeQuantity(props.cartItem.id,
-        parseInt(this.itemQuantity[props.cartItem.id].value));
+      const value = parseInt(this.itemQuantity[props.cartItem.id].value);
+      if (Number.isInteger(value) && value > 99) {
+        return;
+      }
+      props.changeQuantity(props.cartItem.id, value);
     }}
     onBlur={() => {
-      if (!Number.isInteger(parseInt(this.itemQuantity[props.cartItem.id].value))) {
+      const value = parseInt(this.itemQuantity[props.cartItem.id].value);
+      if (!Number.isInteger(value)) {
         props.changeQuantity(props.cartItem.id, 1);
       }
     }}
