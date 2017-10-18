@@ -21,22 +21,24 @@ const propTypes = {
 
 const ShopPage = (props) => {
   let totalPrice = 0;
-  const cartItems = props.cart.length ? _.map(props.cart, (item) => {
-    totalPrice += _.filter(props.products, ['id', item.id])[0].price * (item.quantity ? item.quantity : 0);
-    return (
-      <CartItem
-        key={item.id}
-        cartItem={{
-          ...item,
-          id: item.id,
-          itemName: _.filter(props.products, ['id', item.id])[0].productName,
-          price: _.filter(props.products, ['id', item.id])[0].price,
-        }}
-        changeQuantity={props.changeQuantity}
-        removeProduct={props.removeItem}
-      />
-    );
-  }) : <p className="shop__no-items">No items added</p>;
+  const cartItems = props.cart.length ?
+    _.map(props.cart, (item) => {
+      totalPrice += _.filter(props.products,
+          ['id', item.id])[0].price * (item.quantity ? item.quantity : 0);
+      return (
+        <CartItem
+          key={item.id}
+          cartItem={{
+            ...item,
+            id: item.id,
+            itemName: _.filter(props.products, ['id', item.id])[0].productName,
+            price: _.filter(props.products, ['id', item.id])[0].price,
+          }}
+          changeQuantity={props.changeQuantity}
+          removeProduct={props.removeItem}
+        />
+      );
+    }) : <p className="shop__no-items">No items added</p>;
 
   const products = _.map(props.products, item => (
     <Product
@@ -47,6 +49,19 @@ const ShopPage = (props) => {
       addToCart={props.addItem}
     />
   ));
+
+  let sock = new WebSocket('wss://echo.websocket.org');
+  sock.onopen = (event) => {
+    console.log('Socket connected successfully');
+  };
+
+  setTimeout(() => {
+    sock.send('Hello World');
+  }, 2000);
+
+  sock.onmessage = (event) => {
+    console.log('Event', event);
+  };
 
   return (
     <div>
